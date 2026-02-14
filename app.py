@@ -11,7 +11,7 @@ import asyncio
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 from telegram import Update, Bot
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -316,6 +316,28 @@ async def process_update(update_data):
         update = Update.de_json(update_data, telegram_app.bot)
         await telegram_app.process_update(update)
 
+async def handle_hebrew_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """מטפל בפקודות בעברית שמגיעות כהודעות טקסט"""
+    text = update.message.text.strip()
+    
+    hebrew_commands = {
+        "/הוסף": cmd_add,
+        "/בוצע": cmd_done,
+        "/סטטוס": cmd_status,
+        "/רשימה": cmd_list,
+        "/שלי": cmd_my,
+        "/צוות": cmd_team,
+        "/עזרה": cmd_help,
+    }
+    
+    for prefix, handler in hebrew_commands.items():
+        if text.startswith(prefix):
+            # חילוץ הארגומנטים מהטקסט
+            args_text = text[len(prefix):].strip()
+            context.args = args_text.split() if args_text else []
+            await handler(update, context)
+            return
+
 async def setup_telegram():
     global telegram_app
     if not TELEGRAM_TOKEN:
@@ -323,13 +345,23 @@ async def setup_telegram():
         return
     
     telegram_app = Application.builder().token(TELEGRAM_TOKEN).build()
-    for cmd_he, cmd_en, handler in [
-        ("הוסף","add",cmd_add), ("בוצע","done",cmd_done), ("סטטוס","status",cmd_status),
-        ("רשימה","list",cmd_list), ("שלי","my",cmd_my), ("צוות","team",cmd_team), ("עזרה","help",cmd_help),
-    ]:
-        telegram_app.add_handler(CommandHandler(cmd_he, handler))
-        telegram_app.add_handler(CommandHandler(cmd_en, handler))
+    
+    # פקודות באנגלית (CommandHandler רגיל)
     telegram_app.add_handler(CommandHandler("start", cmd_start))
+    telegram_app.add_handler(CommandHandler("add", cmd_add))
+    telegram_app.add_handler(CommandHandler("done", cmd_done))
+    telegram_app.add_handler(CommandHandler("status", cmd_status))
+    telegram_app.add_handler(CommandHandler("list", cmd_list))
+    telegram_app.add_handler(CommandHandler("my", cmd_my))
+    telegram_app.add_handler(CommandHandler("team", cmd_team))
+    telegram_app.add_handler(CommandHandler("help", cmd_help))
+    
+    # פקודות בעברית (דרך MessageHandler כי CommandHandler לא תומך בעברית)
+    telegram_app.add_handler(MessageHandler(
+        filters.TEXT & filters.Regex(r"^/(הוסף|בוצע|סטטוס|רשימה|שלי|צוות|עזרה)"),
+        handle_hebrew_command
+    ))
+    
     await telegram_app.initialize()
 
     if RENDER_EXTERNAL_URL:
