@@ -6,22 +6,13 @@
     <title>Task Bot - דשבורד</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(160deg, #0F172A, #1E293B, #0F172A);
-            color: #E2E8F0;
-            min-height: 100vh;
-            direction: rtl;
+            color: #E2E8F0; min-height: 100vh; direction: rtl;
         }
-
         .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
-
-        /* Header */
-        .header {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
-        }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
         .header-right { display: flex; align-items: center; gap: 14px; }
         .logo {
             width: 48px; height: 48px; border-radius: 14px;
@@ -31,32 +22,17 @@
         }
         .header h1 { font-size: 22px; font-weight: 700; color: #F8FAFC; }
         .header p { font-size: 13px; color: #64748B; }
-
-        /* Stats */
-        .stats {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 12px; margin-bottom: 24px;
-        }
-        .stat-card {
-            border-radius: 14px; padding: 14px 16px; text-align: center;
-            border: 1px solid transparent;
-        }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        .stat-card { border-radius: 14px; padding: 14px 16px; text-align: center; border: 1px solid transparent; }
         .stat-card .value { font-size: 26px; font-weight: 800; }
         .stat-card .label { font-size: 12px; color: #94A3B8; margin-top: 2px; }
-
-        /* Tabs */
         .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
         .tab {
             background: rgba(30,41,59,0.5); color: #94A3B8;
             border: 1px solid rgba(100,116,139,0.2); border-radius: 10px;
             padding: 10px 20px; cursor: pointer; font-size: 14px; font-weight: 600;
         }
-        .tab.active {
-            background: rgba(0,136,204,0.2); color: #38BDF8;
-            border-color: rgba(0,136,204,0.3);
-        }
-
-        /* Task list */
+        .tab.active { background: rgba(0,136,204,0.2); color: #38BDF8; border-color: rgba(0,136,204,0.3); }
         .task-list { display: flex; flex-direction: column; gap: 10px; }
         .task-card {
             background: rgba(30,41,59,0.7); border-radius: 14px;
@@ -65,8 +41,6 @@
             backdrop-filter: blur(8px); transition: all 0.2s;
         }
         .task-card.done { opacity: 0.5; }
-        .task-card:hover { border-color: rgba(100,116,139,0.3); }
-
         .task-id {
             width: 32px; height: 32px; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
@@ -76,29 +50,20 @@
         .task-text { font-size: 14px; font-weight: 600; color: #F1F5F9; margin-bottom: 4px; }
         .task-text.done-text { text-decoration: line-through; }
         .task-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 12px; color: #94A3B8; }
-        .task-meta .dot { color: #64748B; }
-        
-        .badge {
-            font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
-        }
+        .badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
         .badge-high { background: #FEE2E2; color: #DC2626; }
         .badge-medium { background: #FEF3C7; color: #D97706; }
         .badge-low { background: #DCFCE7; color: #16A34A; }
         .badge-todo { background: #FFF7ED; color: #C2410C; border: 1px solid #FDBA74; }
         .badge-progress { background: #EFF6FF; color: #1D4ED8; border: 1px solid #93C5FD; }
         .badge-done { background: #F0FDF4; color: #15803D; border: 1px solid #86EFAC; }
-
-        .task-actions { display: flex; gap: 8px; flex-shrink: 0; }
-
-        /* Add task form */
+        .task-actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; align-items: center; }
         .add-form {
             background: rgba(30,41,59,0.7); border-radius: 14px;
-            padding: 20px; border: 1px solid rgba(100,116,139,0.15);
-            margin-bottom: 20px;
+            padding: 20px; border: 1px solid rgba(100,116,139,0.15); margin-bottom: 20px;
         }
         .add-form h3 { color: #38BDF8; font-size: 15px; margin-bottom: 14px; }
         .form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        
         input, select {
             background: rgba(15,23,42,0.6); border: 1px solid rgba(100,116,139,0.25);
             border-radius: 10px; padding: 10px 14px; color: #E2E8F0;
@@ -106,18 +71,18 @@
         }
         input:focus, select:focus { border-color: rgba(0,136,204,0.5); }
         input::placeholder { color: #64748B; }
-
         .btn {
             border: none; border-radius: 10px; padding: 10px 20px;
             cursor: pointer; font-size: 13px; font-weight: 600; font-family: inherit;
-            transition: all 0.2s;
+            transition: all 0.2s; position: relative;
         }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-primary { background: linear-gradient(135deg, #0088cc, #0077B5); color: #fff; }
         .btn-success { background: #22C55E; color: #fff; padding: 6px 12px; font-size: 12px; }
         .btn-warning { background: #F59E0B; color: #fff; padding: 6px 12px; font-size: 12px; }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        /* Team panel */
+        .btn-danger { background: rgba(239,68,68,0.15); color: #F87171; padding: 6px 12px; font-size: 12px; border: 1px solid rgba(239,68,68,0.2); }
+        .btn-reassign { background: rgba(139,92,246,0.15); color: #A78BFA; padding: 6px 12px; font-size: 12px; border: 1px solid rgba(139,92,246,0.2); }
+        .btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
         .team-panel {
             background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2);
             border-radius: 16px; padding: 24px; margin-bottom: 24px;
@@ -126,96 +91,203 @@
         .member-card {
             display: flex; align-items: center; gap: 12px;
             background: rgba(15,23,42,0.5); border-radius: 10px;
-            padding: 10px 14px; border: 1px solid rgba(100,116,139,0.15);
-            margin-bottom: 8px;
+            padding: 10px 14px; border: 1px solid rgba(100,116,139,0.15); margin-bottom: 8px;
         }
         .avatar {
             width: 36px; height: 36px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 15px; font-weight: 700; flex-shrink: 0;
         }
-
-        /* Filters */
         .filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
         .filter-btn {
             background: transparent; color: #64748B;
             border: 1px solid transparent; border-radius: 8px;
-            padding: 6px 14px; cursor: pointer; font-size: 13px; font-weight: 500;
-            font-family: inherit;
+            padding: 6px 14px; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit;
         }
         .filter-btn.active { background: #1E293B; color: #F1F5F9; border-color: #334155; }
-
-        /* Loading */
-        .loading { text-align: center; padding: 40px; color: #64748B; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .task-card { flex-wrap: wrap; }
-            .task-actions { width: 100%; justify-content: flex-end; }
-        }
-
-        /* Refresh indicator */
+        .loading-text { text-align: center; padding: 40px; color: #64748B; }
         .refresh-bar {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 12px; font-size: 11px; color: #475569;
         }
         .auto-refresh { cursor: pointer; color: #38BDF8; }
+
+        /* Spinner overlay */
+        .spinner-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15,23,42,0.6); display: flex;
+            align-items: center; justify-content: center; z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .spinner-box {
+            background: rgba(30,41,59,0.95); border-radius: 16px;
+            padding: 28px 36px; display: flex; flex-direction: column;
+            align-items: center; gap: 14px; border: 1px solid rgba(100,116,139,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .spinner {
+            width: 36px; height: 36px; border: 3px solid rgba(56,189,248,0.2);
+            border-top-color: #38BDF8; border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .spinner-text { color: #94A3B8; font-size: 14px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15,23,42,0.7); display: flex;
+            align-items: center; justify-content: center; z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .modal {
+            background: #1E293B; border-radius: 16px; padding: 24px;
+            min-width: 320px; max-width: 440px; border: 1px solid rgba(100,116,139,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .modal h3 { color: #F1F5F9; font-size: 16px; margin-bottom: 16px; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+
+        @media (max-width: 600px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .task-card { flex-wrap: wrap; }
+            .task-actions { width: 100%; justify-content: flex-end; }
+        }
     </style>
 </head>
 <body>
     <div class="container" id="app">
-        <div class="loading">⏳ טוען...</div>
+        <div class="loading-text">⏳ טוען...</div>
     </div>
 
     <script>
-        // ============================================================
-        // State
-        // ============================================================
-        let state = { tasks: [], team_members: [], next_id: 1 };
+        let state = { tasks: [], team_members: [] };
         let currentFilter = "all";
         let showAddForm = false;
         let showTeam = false;
-        let refreshInterval = null;
+        let loadingMessage = "";
+        let modalData = null; // { type: 'reassign'|'delete', taskId, taskText }
 
         // ============================================================
-        // API
+        // Loading spinner
         // ============================================================
-        async function fetchData() {
+        function showLoading(msg) {
+            loadingMessage = msg;
+            renderSpinner();
+        }
+        function hideLoading() {
+            loadingMessage = "";
+            const el = document.getElementById("spinner-container");
+            if (el) el.remove();
+        }
+        function renderSpinner() {
+            let el = document.getElementById("spinner-container");
+            if (!el) {
+                el = document.createElement("div");
+                el.id = "spinner-container";
+                document.body.appendChild(el);
+            }
+            el.innerHTML = `<div class="spinner-overlay">
+                <div class="spinner-box">
+                    <div class="spinner"></div>
+                    <div class="spinner-text">${loadingMessage}</div>
+                </div>
+            </div>`;
+        }
+
+        // ============================================================
+        // API calls (all with loading)
+        // ============================================================
+        async function fetchData(silent) {
+            if (!silent) showLoading("טוען נתונים...");
             try {
                 const res = await fetch("/api/tasks");
                 state = await res.json();
-                render();
-            } catch (e) {
-                console.error("Error fetching data:", e);
-            }
+            } catch (e) { console.error(e); }
+            hideLoading();
+            render();
         }
 
         async function addTask(text, assignee, priority) {
+            showLoading("מוסיף משימה...");
             await fetch("/api/tasks", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text, assignee, priority })
             });
-            await fetchData();
+            await fetchData(true);
+            hideLoading();
         }
 
         async function updateStatus(taskId, status) {
-            await fetch(`/api/tasks/${taskId}/status`, {
+            showLoading("מעדכן סטטוס...");
+            await fetch("/api/tasks/" + taskId + "/status", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status })
             });
-            await fetchData();
+            await fetchData(true);
+            hideLoading();
+        }
+
+        async function deleteTask(taskId) {
+            showLoading("מוחק משימה...");
+            await fetch("/api/tasks/" + taskId, { method: "DELETE" });
+            await fetchData(true);
+            hideLoading();
+        }
+
+        async function reassignTask(taskId, newAssignee) {
+            showLoading("מעביר משימה...");
+            await fetch("/api/tasks/" + taskId + "/assignee", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ assignee: newAssignee })
+            });
+            await fetchData(true);
+            hideLoading();
         }
 
         async function addTeamMember(name) {
+            showLoading("מוסיף חבר צוות...");
             await fetch("/api/team", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name })
             });
-            await fetchData();
+            await fetchData(true);
+            hideLoading();
+        }
+
+        // ============================================================
+        // Modal
+        // ============================================================
+        function showReassignModal(taskId, taskText, currentAssignee) {
+            modalData = { type: "reassign", taskId, taskText, currentAssignee };
+            render();
+        }
+        function showDeleteModal(taskId, taskText) {
+            modalData = { type: "delete", taskId, taskText };
+            render();
+        }
+        function closeModal() {
+            modalData = null;
+            render();
+        }
+
+        async function confirmDelete() {
+            if (modalData) {
+                await deleteTask(modalData.taskId);
+                modalData = null;
+            }
+        }
+
+        async function confirmReassign() {
+            const sel = document.getElementById("reassignSelect");
+            if (sel && modalData) {
+                await reassignTask(modalData.taskId, sel.value);
+                modalData = null;
+            }
         }
 
         // ============================================================
@@ -238,10 +310,48 @@
             else if (currentFilter === "done") filtered = tasks.filter(t => t.status === "הושלם");
 
             const priorityClass = p => p === "גבוהה" ? "badge-high" : p === "נמוכה" ? "badge-low" : "badge-medium";
-            const statusClass = s => s === "הושלם" ? "badge-done" : s === "בתהליך" ? "badge-progress" : "badge-todo";
+            const colors = ["#EF4444","#F59E0B","#22C55E","#3B82F6","#8B5CF6","#EC4899"];
+
+            let modalHtml = "";
+            if (modalData) {
+                if (modalData.type === "delete") {
+                    modalHtml = `<div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+                        <div class="modal">
+                            <h3>🗑 מחיקת משימה #${modalData.taskId}</h3>
+                            <p style="color:#94A3B8;font-size:14px;line-height:1.6">
+                                בטוח שאתה רוצה למחוק את המשימה:<br>
+                                <strong style="color:#F1F5F9">"${modalData.taskText}"</strong>?
+                            </p>
+                            <div class="modal-actions">
+                                <button class="btn" style="background:rgba(100,116,139,0.3);color:#94A3B8" onclick="closeModal()">ביטול</button>
+                                <button class="btn" style="background:#EF4444;color:#fff" onclick="confirmDelete()">מחק</button>
+                            </div>
+                        </div>
+                    </div>`;
+                } else if (modalData.type === "reassign") {
+                    const options = members.map(m =>
+                        `<option value="${m}" ${m === modalData.currentAssignee ? 'selected' : ''}>${m}</option>`
+                    ).join("");
+                    modalHtml = `<div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+                        <div class="modal">
+                            <h3>🔄 העברת משימה #${modalData.taskId}</h3>
+                            <p style="color:#94A3B8;font-size:14px;margin-bottom:12px">
+                                "${modalData.taskText}"
+                            </p>
+                            <label style="font-size:13px;color:#94A3B8;display:block;margin-bottom:6px">העבר ל:</label>
+                            <select id="reassignSelect" style="width:100%">${options}</select>
+                            <div class="modal-actions">
+                                <button class="btn" style="background:rgba(100,116,139,0.3);color:#94A3B8" onclick="closeModal()">ביטול</button>
+                                <button class="btn" style="background:#8B5CF6;color:#fff" onclick="confirmReassign()">העבר</button>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+            }
 
             document.getElementById("app").innerHTML = `
-                <!-- Header -->
+                ${modalHtml}
+
                 <div class="header">
                     <div class="header-right">
                         <div class="logo">✈️</div>
@@ -251,18 +361,20 @@
                         </div>
                     </div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap">
-                        <button class="btn" style="background:${showTeam ? '#8B5CF6' : 'rgba(139,92,246,0.15)'};color:${showTeam ? '#fff' : '#A78BFA'};border:1px solid rgba(139,92,246,0.3)"
+                        <button class="btn" style="background:${showTeam?'#8B5CF6':'rgba(139,92,246,0.15)'};color:${showTeam?'#fff':'#A78BFA'};border:1px solid rgba(139,92,246,0.3)"
                             onclick="showTeam=!showTeam;showAddForm=false;render()">
                             👥 צוות (${members.length})
                         </button>
-                        <button class="btn" style="background:${showAddForm ? '#0088cc' : 'rgba(0,136,204,0.15)'};color:${showAddForm ? '#fff' : '#38BDF8'};border:1px solid rgba(0,136,204,0.3)"
+                        <button class="btn" style="background:${showAddForm?'#0088cc':'rgba(0,136,204,0.15)'};color:${showAddForm?'#fff':'#38BDF8'};border:1px solid rgba(0,136,204,0.3)"
                             onclick="showAddForm=!showAddForm;showTeam=false;render()">
                             ${showAddForm ? '✕ סגור' : '+ משימה חדשה'}
                         </button>
+                        <a href="/logout" class="btn" style="background:rgba(239,68,68,0.1);color:#F87171;border:1px solid rgba(239,68,68,0.2);text-decoration:none;font-size:12px;padding:8px 14px">
+                            🔒 יציאה
+                        </a>
                     </div>
                 </div>
 
-                <!-- Team Panel -->
                 ${showTeam ? `
                 <div class="team-panel">
                     <h3>👥 ניהול חברי צוות</h3>
@@ -272,25 +384,24 @@
                         <button class="btn btn-primary" onclick="doAddMember()">+ הוסף</button>
                     </div>
                     ${members.map((m, i) => {
-                        const colors = ["#EF4444","#F59E0B","#22C55E","#3B82F6","#8B5CF6","#EC4899"];
                         const c = colors[i % colors.length];
-                        const taskCount = tasks.filter(t => t.assignee === m && t.status !== "הושלם").length;
+                        const tc = tasks.filter(t => t.assignee === m && t.status !== "הושלם").length;
                         return `<div class="member-card">
                             <div class="avatar" style="background:${c}22;border:2px solid ${c};color:${c}">${m.charAt(0)}</div>
                             <div style="flex:1">
                                 <div style="font-size:14px;font-weight:600;color:#F1F5F9">${m}</div>
-                                <div style="font-size:11px;color:#64748B">${taskCount} משימות פתוחות</div>
+                                <div style="font-size:11px;color:#64748B">${tc} משימות פתוחות</div>
                             </div>
                         </div>`;
                     }).join("")}
                 </div>` : ""}
 
-                <!-- Add Form -->
                 ${showAddForm ? `
                 <div class="add-form">
                     <h3>➕ הוספת משימה חדשה</h3>
                     <div class="form-row">
-                        <input id="taskText" placeholder="תיאור המשימה..." style="flex:1">
+                        <input id="taskText" placeholder="תיאור המשימה..." style="flex:1"
+                            onkeydown="if(event.key==='Enter')doAddTask()">
                     </div>
                     <div class="form-row">
                         <select id="taskAssignee" style="flex:1">
@@ -305,58 +416,56 @@
                     </div>
                 </div>` : ""}
 
-                <!-- Stats -->
                 <div class="stats">
-                    <div class="stat-card" style="background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.15)">
+                    <div class="stat-card" style="background:rgba(139,92,246,0.1)">
                         <div class="value" style="color:#8B5CF6">${stats.total}</div>
                         <div class="label">סה״כ</div>
                     </div>
-                    <div class="stat-card" style="background:rgba(249,115,22,0.1);border-color:rgba(249,115,22,0.15)">
+                    <div class="stat-card" style="background:rgba(249,115,22,0.1)">
                         <div class="value" style="color:#F97316">${stats.todo}</div>
                         <div class="label">לביצוע</div>
                     </div>
-                    <div class="stat-card" style="background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.15)">
+                    <div class="stat-card" style="background:rgba(59,130,246,0.1)">
                         <div class="value" style="color:#3B82F6">${stats.progress}</div>
                         <div class="label">בתהליך</div>
                     </div>
-                    <div class="stat-card" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.15)">
+                    <div class="stat-card" style="background:rgba(34,197,94,0.1)">
                         <div class="value" style="color:#22C55E">${stats.done}</div>
                         <div class="label">הושלם</div>
                     </div>
                 </div>
 
-                <!-- Refresh bar -->
                 <div class="refresh-bar">
                     <span>🔄 מתעדכן אוטומטית כל 10 שניות</span>
                     <span class="auto-refresh" onclick="fetchData()">רענן עכשיו</span>
                 </div>
 
-                <!-- Filters -->
                 <div class="filters">
-                    <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" onclick="currentFilter='all';render()">הכל</button>
-                    <button class="filter-btn ${currentFilter === 'todo' ? 'active' : ''}" onclick="currentFilter='todo';render()">לביצוע</button>
-                    <button class="filter-btn ${currentFilter === 'progress' ? 'active' : ''}" onclick="currentFilter='progress';render()">בתהליך</button>
-                    <button class="filter-btn ${currentFilter === 'done' ? 'active' : ''}" onclick="currentFilter='done';render()">הושלם</button>
+                    <button class="filter-btn ${currentFilter==='all'?'active':''}" onclick="currentFilter='all';render()">הכל</button>
+                    <button class="filter-btn ${currentFilter==='todo'?'active':''}" onclick="currentFilter='todo';render()">לביצוע</button>
+                    <button class="filter-btn ${currentFilter==='progress'?'active':''}" onclick="currentFilter='progress';render()">בתהליך</button>
+                    <button class="filter-btn ${currentFilter==='done'?'active':''}" onclick="currentFilter='done';render()">הושלם</button>
                 </div>
 
-                <!-- Tasks -->
                 <div class="task-list">
-                    ${filtered.length === 0 ? '<div class="loading">🎉 אין משימות להצגה</div>' :
+                    ${filtered.length === 0 ? '<div class="loading-text">🎉 אין משימות להצגה</div>' :
                     filtered.map(t => {
                         const isDone = t.status === "הושלם";
+                        const idBg = isDone ? '#F0FDF4' : t.status === 'בתהליך' ? '#EFF6FF' : '#FFF7ED';
+                        const idBorder = isDone ? '#86EFAC' : t.status === 'בתהליך' ? '#93C5FD' : '#FDBA74';
+                        const idColor = isDone ? '#15803D' : t.status === 'בתהליך' ? '#1D4ED8' : '#C2410C';
+                        const escapedText = (t.text||'').replace(/'/g, "\\'").replace(/"/g, "&quot;");
                         return `<div class="task-card ${isDone ? 'done' : ''}">
-                            <div class="task-id" style="background:${isDone ? '#F0FDF4' : t.status === 'בתהליך' ? '#EFF6FF' : '#FFF7ED'};
-                                border:1px solid ${isDone ? '#86EFAC' : t.status === 'בתהליך' ? '#93C5FD' : '#FDBA74'};
-                                color:${isDone ? '#15803D' : t.status === 'בתהליך' ? '#1D4ED8' : '#C2410C'}">
+                            <div class="task-id" style="background:${idBg};border:1px solid ${idBorder};color:${idColor}">
                                 #${t.id}
                             </div>
                             <div class="task-content">
                                 <div class="task-text ${isDone ? 'done-text' : ''}">${t.text}</div>
                                 <div class="task-meta">
                                     <span>👤 ${t.assignee}</span>
-                                    <span class="dot">•</span>
-                                    <span>${t.created_at}</span>
-                                    <span class="dot">•</span>
+                                    <span style="color:#64748B">•</span>
+                                    <span style="color:#64748B">${t.created_at}</span>
+                                    <span style="color:#64748B">•</span>
                                     <span style="font-size:10px;color:#64748B">${t.created_by || ''}</span>
                                 </div>
                             </div>
@@ -365,7 +474,12 @@
                                 ${!isDone ? `
                                     ${t.status === 'לביצוע' ? `<button class="btn btn-warning" onclick="updateStatus(${t.id},'בתהליך')">▶ התחל</button>` : ''}
                                     <button class="btn btn-success" onclick="updateStatus(${t.id},'הושלם')">✓ בוצע</button>
-                                ` : `<span class="badge badge-done">הושלם</span>`}
+                                    <button class="btn btn-reassign" onclick="showReassignModal(${t.id},'${escapedText}','${t.assignee}')">🔄</button>
+                                    <button class="btn btn-danger" onclick="showDeleteModal(${t.id},'${escapedText}')">🗑</button>
+                                ` : `
+                                    <span class="badge badge-done">הושלם</span>
+                                    <button class="btn btn-danger" onclick="showDeleteModal(${t.id},'${escapedText}')">🗑</button>
+                                `}
                             </div>
                         </div>`;
                     }).join("")}
@@ -384,26 +498,20 @@
             const text = document.getElementById("taskText")?.value?.trim();
             const assignee = document.getElementById("taskAssignee")?.value;
             const priority = document.getElementById("taskPriority")?.value;
-            if (text) {
-                addTask(text, assignee, priority);
-                showAddForm = false;
-            }
+            if (text) { addTask(text, assignee, priority); showAddForm = false; }
         }
 
         function doAddMember() {
             const input = document.getElementById("newMember");
             const name = input?.value?.trim();
-            if (name) {
-                addTeamMember(name);
-                input.value = "";
-            }
+            if (name) { addTeamMember(name); input.value = ""; }
         }
 
         // ============================================================
         // Init
         // ============================================================
         fetchData();
-        refreshInterval = setInterval(fetchData, 10000); // רענון כל 10 שניות
+        setInterval(() => fetchData(true), 10000);
     </script>
 </body>
 </html>

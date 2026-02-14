@@ -10,6 +10,8 @@ services:
         sync: false
       - key: DATABASE_URL
         sync: false
+      - key: DASHBOARD_PASSWORD
+        sync: false
       - key: SECRET_PATH
         generateValue: true
       - key: RENDER_EXTERNAL_URL
